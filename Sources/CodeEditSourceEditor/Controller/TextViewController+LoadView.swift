@@ -115,14 +115,13 @@ extension TextViewController {
         }
         self.localEvenMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             guard self?.view.window?.firstResponder == self?.textView else { return event }
-            let commandKey = NSEvent.ModifierFlags.command.rawValue
-            let modifierFlags = event.modifierFlags.intersection(.deviceIndependentFlagsMask).rawValue
-            if modifierFlags == commandKey && event.charactersIgnoringModifiers == "/" {
+            let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+            switch event.charactersIgnoringModifiers {
+            case "/" where flags == .command:
                 self?.commandSlashCalled()
-                return nil
-            } else {
-                return event
+            default: return event
             }
+            return nil
         }
     }
 }
