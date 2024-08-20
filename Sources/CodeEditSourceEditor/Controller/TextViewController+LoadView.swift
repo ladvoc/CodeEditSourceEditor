@@ -119,6 +119,12 @@ extension TextViewController {
             switch event.charactersIgnoringModifiers {
             case "/" where flags == .command:
                 self?.commandSlashCalled()
+            case "]" where flags == .command,
+                 "\t":
+                print("Indent")
+            case "[" where flags == .command,
+                "\u{19}": // "End of Medium" character
+                print("Outdent")
             default: return event
             }
             return nil
